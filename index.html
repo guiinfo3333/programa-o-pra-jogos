@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+var canvas, canvasContext;
+var frameRate = 60;
+
+var ballX ;
+var ballY ;
+var ballSpeedX;
+var ballSpeedY;
+var BALL_EFFECT;
+var NPC_STEP;
+
+var PADDLE_WIDTH //largura do paddle
+var PADDLE_THICKNESS //altura do paddle
+var PADDLE_DIST_FROM_EDGE; //distancia da borda
+var paddleY; //posicao x do paddle
+var paddle2Y;
+
+var pontNormal;
+var pontEnemy;
+
+var paddleShockNormal = false
+var paddleShockEnemy = false
+var endGame = false
+pointTotal = 2
+
+function initVariaveis() {
+	frameRate = 60;
+
+	ballX =  100;
+	ballY = 0;
+	ballSpeedX = 5;
+	ballSpeedY = 7;
+	BALL_EFFECT = 0.25;
+	NPC_STEP = 10;
+
+	PADDLE_WIDTH = 10; //largura do paddle
+	PADDLE_THICKNESS = 100; //altura do paddle
+	PADDLE_DIST_FROM_EDGE = 60; //distancia da borda
+	paddleY = 20; //posicao x do paddle
+	paddle2Y = 400;
+
+	pontNormal = 0;
+	pontEnemy = 0;
+
+	paddleShockNormal = false
+	paddleShockEnemy = false
+	endGame = false
+	pointTotal = 2
+}
+
+initVariaveis()
+
+function updateMousePos(evt) {
+	//magic, do not touch
+	var rect = canvas.getBoundingClientRect(); //800(h) por 600(w)
+	var root = document.documentElement;
+	var mouseY = evt.clientY - rect.top - root.scrollLeft; //o quanto ta afastado meu canvas da
+	paddleY = mouseY - PADDLE_THICKNESS/2;  //paddle x é a posicao do mouse - a metade da largura do paddle
+
+}
+
+window.onload = function() {
+    canvas = document.getElementById('gameCanvas');
+    canvasContext = canvas.getContext('2d');
+    setInterval(update,1000/frameRate);
+	canvas.addEventListener('mousemove',updateMousePos);
+}
+
+function update() {
+	if (endGame) {
+		ViewEndGame()
+		setTimeout(initVariaveis, 3000)
+	} else {
+		move();
+		draw();
+	}
+}
+
+
+function npcMovement(){
+	if(paddle2Y < ballY)
+		paddle2Y += NPC_STEP;
+	else
+		paddle2Y -= NPC_STEP;
+}
+
+
+function move() {
+	npcMovement();
+	addMoviments();
+	colisionBallBetweenWalls();
+	colisionPaddleAndBall();
+	colisionBallAndNpc();
+}
+
+
+function ViewEndGame(){
+	canvasContext.font = '50px Arial';
+	colorRect(0,0,canvas.width, canvas.height,'black'); //clear screen
+	canvasContext.fillText("Fim do Jogo", 300, 100);
+	colorRect(canvas.width/2,0 + 30,0, 0,'white');
+	canvasContext.fillText("Fim de Jogo !", canvas.width/2 - 120, 100);
+
+	if (pontNormal == pointTotal) canvasContext.fillText("Você ganhou !", canvas.width/2 - 120, 150);
+	else canvasContext.fillText("Você perdeu !", canvas.width/2 - 120, 200);
+
+}
+
+
+function addMoviments(){
+	ballX += ballSpeedX;
+	ballY += ballSpeedY;
+}
+
+function colisionBallBetweenWalls(){
+	if(ballX <= 0) 
+		ballReset("enemy");
+	if(ballX >= canvas.width) 
+		ballReset("normal");
+	if(ballY <= 0)
+		ballSpeedY = -ballSpeedY;
+	if(ballY >= canvas.height) 
+		ballSpeedY = -ballSpeedY;
+}
+
+
+function verifyWinner() {
+	if (pontNormal == pointTotal ) endGame = true
+	else if (pontEnemy == pointTotal) endGame = true
+}
+
+function calcPoint(type) {
+	if (type == "enemy") pontEnemy +=1
+	else pontNormal+=1
+	verifyWinner();
+}
+
+
+function colisionPaddleAndBall(){
+	let paddleTopEdgeY = paddleY;
+	let paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS; 
+	let paddleLeftEdgeX =PADDLE_DIST_FROM_EDGE; 
+	let paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+	
+	if(ballY > paddleTopEdgeY &&  
+	   ballY < paddleBottomEdgeY && 
+	   ballX > paddleLeftEdgeX && 
+	   ballX < paddleRightEdgeX) {
+		ballSpeedX *= -1;
+		
+		let centerOfPaddleY = paddleY + PADDLE_THICKNESS/2;
+		let ballDistFromPaddleCenterY = ballY - centerOfPaddleY;
+		ballSpeedY = ballDistFromPaddleCenterY*BALL_EFFECT;
+		paddleShockNormal = true
+		paddleShockEnemy = false
+	} 
+}
+
+function colisionBallAndNpc(){
+	let paddleTopEdgeY = paddle2Y;
+	let paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS; 
+	let paddleRightEdgeX = canvas.width - PADDLE_DIST_FROM_EDGE;
+	let paddleLeftEdgeX = paddleRightEdgeX - PADDLE_WIDTH; 
+
+	if(ballY > paddleTopEdgeY &&  
+	   ballY < paddleBottomEdgeY && 
+	   ballX > paddleLeftEdgeX && 
+	   ballX < paddleRightEdgeX) {
+		ballSpeedX *= -1;
+		
+		let centerOfPaddleY = paddle2Y + PADDLE_THICKNESS/2;
+		let ballDistFromPaddleCenterY = ballY - centerOfPaddleY;
+		ballSpeedY = ballDistFromPaddleCenterY*BALL_EFFECT;
+		paddleShockNormal = false
+		paddleShockEnemy = true
+	}
+}
+
+function ballReset(type){
+	if (type == "enemy") {
+		calcPoint("enemy")
+		ballX =canvas.width/2;
+		ballY = Math.floor(Math.random() * canvas.height);
+	} else {
+		calcPoint("normal")
+		ballX =canvas.width/2;
+		ballY = Math.floor(Math.random() * canvas.height);
+	}
+	ballSpeedX =- ballSpeed
+	
+}
+
+
+function draw() {
+	colorRect(0,0,canvas.width, canvas.height,'black'); //clear screen
+	
+	//division
+	colorRect(canvas.width/2,0 + 30,PADDLE_WIDTH, canvas.height - 60,'white');
+	//end division
+
+	pontuation();
+
+	colorCircle(ballX,ballY,10,'white'); // draw ball
+	colorRect(PADDLE_DIST_FROM_EDGE,paddleY,
+				PADDLE_WIDTH, PADDLE_THICKNESS, paddleShockNormal ? 'blue' : 'white');
+	colorRect(canvas.width - PADDLE_DIST_FROM_EDGE, paddle2Y,
+				PADDLE_WIDTH, PADDLE_THICKNESS, paddleShockEnemy ? 'blue' : 'white');
+}
+
+function pontuation() {
+	canvasContext.font = '50px Arial';
+	canvasContext.fillText(pontNormal, canvas.width/2 - 120, 100);
+	canvasContext.fillText(pontEnemy, canvas.width/2 + 120, 100);
+}
+
+function colorRect(topLeftX, topLeftY, width, height, fillColor) {
+    canvasContext.fillStyle = fillColor;
+    canvasContext.fillRect(topLeftX, topLeftY, width, height);
+}
+
+function colorCircle(centerX,centerY, radius, fillColor) {
+	canvasContext.fillStyle = fillColor;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX,centerY, radius,0,Math.PI*2,true);
+    canvasContext.fill();
+}
+
+
+</script>
+</body>
+</html>
