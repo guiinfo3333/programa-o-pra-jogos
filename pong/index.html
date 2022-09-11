@@ -11,7 +11,7 @@
 
 <script>
 var canvas, canvasContext;
-var frameRate = 60;
+var frameRate = 1;
 
 var ballX ;
 var ballY ;
@@ -32,7 +32,13 @@ var pontEnemy;
 var paddleShockNormal = false
 var paddleShockEnemy = false
 var endGame = false
-pointTotal = 2
+pointTotal = 10
+var trava = false
+var rodadas = 0
+
+var rodada = new Object();
+rodada.numeroRodada = 0;
+rodada.ultimaRoda = "";
 
 function initVariaveis() {
 	frameRate = 60;
@@ -41,7 +47,7 @@ function initVariaveis() {
 	ballY = 0;
 	ballSpeedX = 5;
 	ballSpeedY = 7;
-	BALL_EFFECT = 0.25;
+	BALL_EFFECT = 0.35;
 	NPC_STEP = 10;
 
 	PADDLE_WIDTH = 10; //largura do paddle
@@ -56,7 +62,7 @@ function initVariaveis() {
 	paddleShockNormal = false
 	paddleShockEnemy = false
 	endGame = false
-	pointTotal = 2
+	pointTotal = 10
 }
 
 initVariaveis()
@@ -75,24 +81,66 @@ window.onload = function() {
     canvasContext = canvas.getContext('2d');
     setInterval(update,1000/frameRate);
 	canvas.addEventListener('mousemove',updateMousePos);
+	document.addEventListener('keydown', (event) => {
+		if (trava) {
+		trava = false
+	} else {
+		trava = true
+	}
+}, false);
+}
+
+function trava(evt){
+
 }
 
 function update() {
-	if (endGame) {
-		ViewEndGame()
-		setTimeout(initVariaveis, 3000)
-	} else {
-		move();
-		draw();
+	if (!trava) {
+		if (endGame) {
+			ViewEndGame()
+			setTimeout(initVariaveis, 1500)
+		} else {
+			move();
+			draw();
+		}
 	}
 }
 
 
 function npcMovement(){
-	if(paddle2Y < ballY)
-		paddle2Y += NPC_STEP;
-	else
-		paddle2Y -= NPC_STEP;
+	if((paddle2Y <= ballY))	{
+		if (rodada.numeroRodada < 10 && rodada.ultimaRoda == "maior") {
+			rodada.ultimaRoda = "maior"
+			paddle2Y -= NPC_STEP;
+			if (rodada.numeroRodada == 10) rodada.numeroRodada = 1
+			rodada.ultimaRoda = "maior"
+			rodada.numeroRodada += 1
+		} else {
+			paddle2Y += NPC_STEP;
+			if (rodada.numeroRodada == 10) rodada.numeroRodada = 1
+			rodada.ultimaRoda = "menor"
+			rodada.numeroRodada += 1
+		}
+	}
+	
+	else {
+		if (rodada.numeroRodada < 10 && rodada.ultimaRoda == "menor") {
+			rodada.ultimaRoda = "menor"
+			paddle2Y += NPC_STEP;
+			if (rodada.numeroRodada == 10) rodada.numeroRodada = 1
+			rodada.ultimaRoda = "menor"
+			rodada.numeroRodada += 1
+		} else {
+			paddle2Y -= NPC_STEP;
+			if (rodada.numeroRodada == 10) rodada.numeroRodada = 1
+			rodada.ultimaRoda = "maior"
+			rodada.numeroRodada += 1
+		}
+	
+	}
+
+	console.log(paddle2Y)
+		
 }
 
 
@@ -180,7 +228,7 @@ function colisionBallAndNpc(){
 		ballSpeedX *= -1;
 		
 		let centerOfPaddleY = paddle2Y + PADDLE_THICKNESS/2;
-		let ballDistFromPaddleCenterY = ballY - centerOfPaddleY;
+		let ballDistFromPaddleCenterY = ballY - centerOfPaddleY; //distacia do y da bola - distancia do centro y do paddle
 		ballSpeedY = ballDistFromPaddleCenterY*BALL_EFFECT;
 		paddleShockNormal = false
 		paddleShockEnemy = true
