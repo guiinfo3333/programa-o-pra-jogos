@@ -8,9 +8,12 @@ class World {
 		this.timeStep = 1000/this.frameRate; 
 		this.lastFrameTimeMs = 0;
 		this.delta = 0;
+
+		this.personagePhysics = new PersonagePhysics();
 	
-		this.personage = new Personage();
-		this.entities = [this.personage];
+		this.personage = new Personage(this.personagePhysics);
+		this.scenery = new Scenery();
+		this.entities = [this.personage, this.scenery];
 		
 		
 		World.canvas = document.getElementById('gameCanvas');
