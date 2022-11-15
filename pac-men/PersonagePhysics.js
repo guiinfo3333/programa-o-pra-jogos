@@ -23,11 +23,13 @@ class PersonagePhysics {
         //irmaozinho do meio
         let cenarioBottomY = (personageRow - 1)  * (world.scenery.height) + 60 
 
+        let cenarioTopY = (personageRow + 1)  * (world.scenery.height)
+
         /*
             posicoes do personagem  
         */
         let personagePositionTopY = personage.positionY
-        let personagePositionBottomY = personage.positionY + 60
+        let personagePositionBottomY = personage.positionY + personage.height
         let personagePositionLeftX = personage.positionX
         let personagePositionRightX = (personage.positionX) + world.personage.width
 
@@ -45,8 +47,16 @@ class PersonagePhysics {
                 }
                 break;
             case "DOWN":
-                if (personage.positionY < (World.canvas.height - world.personage.width)) {
-                    personage.positionY += personage.speed;
+                if ((parseInt(world.scenery.grid[personageRow + 1][personageColumn]) == parseInt(0)
+                    && parseFloat(personagePositionBottomY)  >= parseFloat(cenarioTopY)
+                    || (parseInt(world.scenery.grid[personageRow + 1][personageColumn + 1]) == parseInt(0) &&
+                    parseFloat(personagePositionRightX)  >= parseFloat(cenarioLeftX)
+                    ))) {
+                        
+                } else {
+                    if (personage.positionY < (World.canvas.height - world.personage.width)) {
+                        personage.positionY += personage.speed;
+                    }
                 }
                 break;
             case "LEFT":
