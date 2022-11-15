@@ -28,7 +28,6 @@ class Scenery{
     }
 
     draw(){
-        console.log(this.grid)
         for (var i = 0; i < this.grid.length; i++) {
             for (var j = 0; j < this.grid[i].length; j++) {
                 if (this.grid[i][j] == 0) {

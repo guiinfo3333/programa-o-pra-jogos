@@ -7,7 +7,6 @@ class KeyBoardInput {
                 KeyBoardInput.state = "UP"
                 break;
             case "ArrowDown":
-                console.log("entrou")
                 KeyBoardInput.state = "DOWN"
                 break;
             case "ArrowRight":
@@ -16,7 +15,7 @@ class KeyBoardInput {
             case "ArrowLeft":
                 KeyBoardInput.state = "LEFT"
                 break;
-            
         }
+        
 	}
 }

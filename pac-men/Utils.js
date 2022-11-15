@@ -19,4 +19,12 @@ class Utils {
   static clearScreen(color = 'black') {
 		this.colorRect(0,0,World.canvas.width, World.canvas.height,color);
 	}
+
+  static colorText(){
+    World.canvasContext.beginPath()
+    World.canvasContext.font = '50px Arial';
+    World.canvasContext.fill ='blue';
+    World.canvasContext.fillText("Olá, mundo!", 300, 200);
+    World.canvasContext.closePath()
+  }
 }
