@@ -38,7 +38,7 @@ class PersonagePhysics {
                 if ((parseInt(world.scenery.grid[personageRow - 1 == -1 ? 0 : personageRow - 1][personageColumn]) == parseInt(0)
                     && parseFloat(personagePositionTopY)  <= parseFloat(cenarioBottomY) 
                     || (parseInt(world.scenery.grid[personageRow - 1 == -1 ? 0 : personageRow - 1][personageColumn + 1]) == parseInt(0) &&
-                        parseFloat(personagePositionRightX)  >= parseFloat(cenarioLeftX))))  {
+                        parseFloat(personagePositionRightX)  >= parseFloat(cenarioLeftX) && parseFloat(personagePositionTopY)  <= parseFloat(cenarioBottomY) )))  {
                         
                 } else {
                     if (personage.positionY >= 0) {
@@ -50,7 +50,7 @@ class PersonagePhysics {
                 if ((parseInt(world.scenery.grid[personageRow + 1][personageColumn]) == parseInt(0)
                     && parseFloat(personagePositionBottomY)  >= parseFloat(cenarioTopY)
                     || (parseInt(world.scenery.grid[personageRow + 1][personageColumn + 1]) == parseInt(0) &&
-                    parseFloat(personagePositionRightX)  >= parseFloat(cenarioLeftX)
+                    parseFloat(personagePositionRightX)  >= parseFloat(cenarioLeftX) && parseFloat(personagePositionBottomY)  >= parseFloat(cenarioTopY)
                     ))) {
                         
                 } else {
