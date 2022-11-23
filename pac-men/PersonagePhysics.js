@@ -6,48 +6,68 @@ class PersonagePhysics {
         let choqueScenerySuperiorDireitoX = res[1]
         let choqueScenerySuperiorCimaY = res[2]
         let choqueScenerySuperiorBaixoY = res[3]
+        let choqueScenerySuperiorCimaYDireita = res[4]
+        let choqueSceneryBaixoYDireitaX = res[5]
 
 
         document.getElementById("alo").innerText = "superior esquerdo  X" +choqueScenerySuperiorEsquerdoX+
         "\n superior direito X"+ choqueScenerySuperiorDireitoX +
         "\n superior cima Y" + choqueScenerySuperiorCimaY +
         "\n superior baixo Y" + choqueScenerySuperiorBaixoY +
-        "\ posicao x esquerdo do personagem" + personage.positionX
-
-
+        "\n posicao x esquerdo do personagem" + personage.positionX +
+        "\n y na direita " + choqueScenerySuperiorCimaYDireita +
+        "\n baixo y e direita X" +choqueSceneryBaixoYDireitaX
 
         switch(KeyBoardInput.state) {
             case "UP":    
-                if (!choqueScenerySuperiorCimaY)  {
+                if (!choqueScenerySuperiorCimaY && !choqueScenerySuperiorCimaYDireita)  {
                     if (personage.positionY >= 0) {
                         personage.positionY -= personage.speed; 
                     }
                 } else {
                     var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
-                    if (resultChoque[2]) {
-                        personage.positionY += 4
+                    if (resultChoque[2] || resultChoque[4]) {
+                        personage.positionY += 5
                         KeyBoardInput.state = "NONE"
                     }
                 }
                 break;
             case "DOWN":
-                if (!choqueScenerySuperiorBaixoY) {
+                if (!choqueScenerySuperiorBaixoY && !choqueSceneryBaixoYDireitaX) {
                         if (personage.positionY < (World.canvas.height - world.personage.width)) {
                             personage.positionY += personage.speed;
                         }
-                } 
+                } else {
+                    var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
+                    if (resultChoque[3] || resultChoque[5]) {
+                        personage.positionY -= 5
+                        KeyBoardInput.state = "NONE"
+                    }
+                }
                 break;
             case "LEFT":
-                if (!choqueScenerySuperiorEsquerdoX){                                         
+                if (!choqueScenerySuperiorEsquerdoX && !choqueScenerySuperiorBaixoY){                                         
                     if (personage.positionX > 0) {
                         personage.positionX -= personage.speed;
+                    }
+                } else {
+                    var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
+                    if (resultChoque[0] || resultChoque[3]) {
+                        personage.positionX += 5
+                        KeyBoardInput.state = "NONE"
                     }
                 }
                 break;
             case "RIGHT":
-                if (!choqueScenerySuperiorDireitoX){                                         
+                if (!choqueScenerySuperiorDireitoX && !choqueSceneryBaixoYDireitaX){                                         
                     if (personage.positionX < (World.canvas.width - world.personage.width)) {
                         personage.positionX += personage.speed;
+                    }
+                } else {
+                    var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
+                    if (resultChoque[1] || resultChoque[5]) {
+                        personage.positionX -= 5
+                        KeyBoardInput.state = "NONE"
                     }
                 }
 
@@ -60,10 +80,12 @@ class PersonagePhysics {
         let personageColumnDireita = 0
         let personageRow = 0
         let personageRowEmBaixo = 0
+        let personageRowPlusWidth = 0
 
         personageColumn = Math.floor((personagePositionX )/world.scenery.width);
         personageColumnDireita = Math.floor((personagePositionX + personageWidth)/world.scenery.width);
         personageRow = Math.floor(personagePositionY /world.scenery.height);
+        personageRowPlusWidth = Math.floor(personageRowPlusWidth /world.scenery.height);
         personageRowEmBaixo = Math.floor((personagePositionY + personageHeight)/world.scenery.height);
 
 
@@ -73,10 +95,17 @@ class PersonagePhysics {
         let choqueScenerySuperiorEsquerdoX = world.scenery.grid[personageRow][personageColumn] == 0 ? true : false
         let choqueScenerySuperiorDireitoX = world.scenery.grid[personageRow][personageColumnDireita] == 0 ? true : false
         let choqueScenerySuperiorCimaY = world.scenery.grid[personageRow][personageColumn] == 0 ? true : false
+        let choqueScenerySuperiorCimaYDireita = world.scenery.grid[personageRow][personageColumnDireita] == 0 ? true : false
         let choqueScenerySuperiorBaixoY = world.scenery.grid[personageRowEmBaixo][personageColumn] == 0 ? true : false
+        let choqueScenerySuperiorBaixoYDireitaX = world.scenery.grid[personageRowEmBaixo][personageColumnDireita] == 0 ? true : false
 
-        return [choqueScenerySuperiorEsquerdoX, choqueScenerySuperiorDireitoX, choqueScenerySuperiorCimaY, choqueScenerySuperiorBaixoY]
+        return [
+            choqueScenerySuperiorEsquerdoX,
+            choqueScenerySuperiorDireitoX,
+            choqueScenerySuperiorCimaY,
+            choqueScenerySuperiorBaixoY, 
+            choqueScenerySuperiorCimaYDireita,
+            choqueScenerySuperiorBaixoYDireitaX
+        ]
     }
-
-
 }
