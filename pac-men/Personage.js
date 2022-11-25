@@ -1,5 +1,5 @@
 class Personage extends GameObject{
-    constructor(physics = null, name = "", positionX = 1, positionY = 100, speed = 5, closed = 0) {
+    constructor(physics = null, color = "yellow", name = "", positionX = 1, positionY = 180, speed = 5, closed = 0) {
         super(physics)
         this.name = name
         this.positionX = positionX
@@ -9,6 +9,7 @@ class Personage extends GameObject{
         this.physics = physics
         this.width = 40
         this.height = 40
+        this.color = color
 	}
 
     getPositionX(){
@@ -40,7 +41,7 @@ class Personage extends GameObject{
         //         break;
         // }
 
-        Utils.colorRect(this.positionX, this.positionY, this.width, this.height, "yellow");
+        Utils.colorRect(this.positionX, this.positionY, this.width, this.height, this.color);
 
         // if (this.closed > 10) {
         //     World.canvasContext.colorRect(this.positionX, this.positionY, this.width, this.height, "yellow");

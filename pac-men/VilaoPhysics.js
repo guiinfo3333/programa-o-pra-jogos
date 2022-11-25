@@ -1,4 +1,4 @@
-class PersonagePhysics {
+class VilaoPhysics {
     move(personage,world,deltaTime) {
         var res = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
         let choqueScenerySuperiorEsquerdoX = res[0]
@@ -17,7 +17,7 @@ class PersonagePhysics {
         "\n y na direita " + choqueScenerySuperiorCimaYDireita +
         "\n baixo y e direita X" +choqueSceneryBaixoYDireitaX
 
-        switch(KeyBoardInput.state) {
+        switch(KeyBoardInputVilao.state) {
             case "UP":    
                 if (!choqueScenerySuperiorCimaY && !choqueScenerySuperiorCimaYDireita)  {
                     if (personage.positionY >= 0) {
@@ -48,6 +48,9 @@ class PersonagePhysics {
                 if (!choqueScenerySuperiorEsquerdoX && !choqueScenerySuperiorBaixoY){                                         
                     if (personage.positionX > 0) {
                         personage.positionX -= personage.speed;
+                    } else {
+                        KeyBoardInputVilao.state = "RIGHT"
+                        personage.positionX += personage.speed;
                     }
                 } else {
                     var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
@@ -61,6 +64,9 @@ class PersonagePhysics {
                 if (!choqueScenerySuperiorDireitoX && !choqueSceneryBaixoYDireitaX){                                         
                     if (personage.positionX < (World.canvas.width - world.personage.width)) {
                         personage.positionX += personage.speed;
+                    } else {
+                        KeyBoardInputVilao.state = "LEFT"
+                        personage.positionX -= personage.speed;
                     }
                 } else {
                     var resultChoque = this.calcChoques(personage.positionX, personage.positionY, personage.width, personage.height, world)
@@ -71,6 +77,28 @@ class PersonagePhysics {
                 }
 
                 break;
+        }
+
+        let verificandoChoqueNaDireita = ((world.personage.positionX + world.personage.width) < personage.positionX
+        && world.personage.positionY < personage.positionY) ? true : false
+
+        let verificandoChoqueEmCima = ((world.personage.positionX < personage.positionX) || 
+            (world.personage.positionX +  world.personage.width) > personage.positionX + personage.width
+            ) ? true : false
+
+        let verificandoChoqueNaEsquerda = ((world.personage.positionX) > personage.positionX
+        && (world.personage.positionY > personage.positionY + personage.height || 
+            world.personage.positionY + world.personage.height < personage.positionY
+            )
+        )
+
+        let verificandoChoqueEmBaixo = ((world.personage.positionX < personage.positionX ||
+            world.personage.positionX + world.personage.width > personage.positionX + personage.width
+            ))
+
+        //verificando choque entre vilao e personagem
+        if (verificandoChoqueNaDireita) {
+
         }
     }
 

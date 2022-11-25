@@ -14,6 +14,7 @@ class Scenery{
             this.grid.push([])
             for (var j = 0; j < this.columns; j++) {
                 if ((j % 2) == 0 && (i % 2) == 0) this.grid[i].push(0) //cenary
+                else if(((j % 3 && i % 3))) this.grid[i].push(0) 
                 else this.grid[i].push(1) // black
             }
         }
