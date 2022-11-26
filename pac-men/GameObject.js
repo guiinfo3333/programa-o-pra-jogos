@@ -1,5 +1,6 @@
-class GameObject {
+class GameObject extends Observer{
 	constructor(physics = null) {
+		super()
 		this.physics = physics;
 	}
 	

@@ -1,5 +1,5 @@
-class Personage extends GameObject{
-    constructor(physics = null, color = "yellow", name = "", positionX = 1, positionY = 180, speed = 5, closed = 0) {
+class Personage extends GameObject {
+    constructor(physics = null, color = "yellow", positionX = 1, positionY = 180, name = "", speed = 5, closed = 0) {
         super(physics)
         this.name = name
         this.positionX = positionX
@@ -10,6 +10,7 @@ class Personage extends GameObject{
         this.width = 40
         this.height = 40
         this.color = color
+        this.impact = false
 	}
 
     getPositionX(){
@@ -52,4 +53,15 @@ class Personage extends GameObject{
         // }
 
     }
+
+    onNotify(ev) {
+		switch(ev) {
+			case Utils.EVENTS.PERSONAGE_IMPACT:
+                console.log("sfodopop")
+                this.impact = true;
+				break;
+			default:
+				break;
+		}
+	}
 }

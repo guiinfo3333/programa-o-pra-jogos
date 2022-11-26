@@ -12,10 +12,12 @@ class World {
 		this.personagePhysics = new PersonagePhysics();
 		this.vilaoPhysics = new VilaoPhysics();
 	
-		this.personage = new Personage(this.personagePhysics);
-		this.vilao = new Personage(this.vilaoPhysics, "red");
+		this.personage = new Personage(this.personagePhysics, "yellow", 500);
+		this.vilaoPhysics.addObserver(this.personage)
+		this.vilao = new Personage(this.vilaoPhysics, "red", );
 		
 		this.scenery = new Scenery();
+		this.vilaoPhysics.addObserver(this.scenery)
 		this.entities = [this.personage, this.scenery, this.vilao];
 		
 		

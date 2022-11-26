@@ -1,5 +1,10 @@
 class Utils {
-
+  static EVENTS = {
+		PERSONAGE_IMPACT: 'personageImpact',
+		PERSONAGE_DO_NOT_IMPACT: 'personageDoNotImpact',
+		END_GAME: "YES"
+	}
+	
   static colorRect(topLeftX, topLeftY, width, height, fillColor) {
     World.canvasContext.beginPath()
 		World.canvasContext.fillStyle = fillColor;
@@ -25,6 +30,21 @@ class Utils {
     World.canvasContext.font = '50px Arial';
     World.canvasContext.fill ='blue';
     World.canvasContext.fillText("Olá, mundo!", 300, 200);
+    World.canvasContext.closePath()
+  }
+
+  static drawerEndGame(){
+    World.canvasContext.beginPath()
+
+    World.canvasContext.font = '50px Arial';
+    this.colorRect(0,0,World.canvas.width, World.canvas.height,'black'); //clear screen
+    World.canvasContext.fillText("Fim do Jogo", 300, 100);
+    this.colorRect(World.canvas.width/2,0 + 30,0, 0,'white');
+    World.canvasContext.fillText("Fim de Jogo !", World.canvas.width/2 - 120, 100);
+  
+    if (pontNormal == pointTotal) World.canvasContext.fillText("Você ganhou !", World.canvas.width/2 - 120, 150);
+    else World.canvasContext.fillText("Você perdeu !", World.canvas.width/2 - 120, 200);
+
     World.canvasContext.closePath()
   }
 }
