@@ -41,10 +41,7 @@ class Utils {
     World.canvasContext.fillText("Fim do Jogo", 300, 100);
     this.colorRect(World.canvas.width/2,0 + 30,0, 0,'white');
     World.canvasContext.fillText("Fim de Jogo !", World.canvas.width/2 - 120, 100);
-  
-    if (pontNormal == pointTotal) World.canvasContext.fillText("Você ganhou !", World.canvas.width/2 - 120, 150);
-    else World.canvasContext.fillText("Você perdeu !", World.canvas.width/2 - 120, 200);
-
+    World.canvasContext.fillText("Você perdeu !", World.canvas.width/2 - 120, 200);
     World.canvasContext.closePath()
   }
 }

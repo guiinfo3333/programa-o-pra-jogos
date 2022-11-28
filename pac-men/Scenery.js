@@ -23,7 +23,10 @@ class Scenery extends Observer{
     }
 
     mountedFruits(){
-        this.grid[0][1] = 2
+        this.grid[0][3] = 2
+        this.grid[0][9] = 2
+        this.grid[0][15] = 2
+        this.grid[8][3] = 2
     }
 
     move(world, deltaTime){
@@ -52,5 +55,4 @@ class Scenery extends Observer{
 				break;
 		}
 	}
-
 }
