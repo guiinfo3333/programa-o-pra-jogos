@@ -1,10 +1,4 @@
 class Utils {
-  static EVENTS = {
-		PERSONAGE_IMPACT: 'personageImpact',
-		PERSONAGE_DO_NOT_IMPACT: 'personageDoNotImpact',
-		END_GAME: "YES"
-	}
-	
   static colorRect(topLeftX, topLeftY, width, height, fillColor) {
     World.canvasContext.beginPath()
 		World.canvasContext.fillStyle = fillColor;
@@ -35,7 +29,6 @@ class Utils {
 
   static drawerEndGame(){
     World.canvasContext.beginPath()
-
     World.canvasContext.font = '50px Arial';
     this.colorRect(0,0,World.canvas.width, World.canvas.height,'black'); //clear screen
     World.canvasContext.fillText("Fim do Jogo", 300, 100);
@@ -43,5 +36,12 @@ class Utils {
     World.canvasContext.fillText("Fim de Jogo !", World.canvas.width/2 - 120, 100);
     World.canvasContext.fillText("Você perdeu !", World.canvas.width/2 - 120, 200);
     World.canvasContext.closePath()
+  }
+}
+
+class EventGeral {
+  constructor(nameEvent, objectEvent){
+    this.nameEvent = nameEvent
+    this.objectEvent = objectEvent
   }
 }

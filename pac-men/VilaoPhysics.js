@@ -75,8 +75,8 @@ class VilaoPhysics extends Subject {
             world.personage.positionY < vilao.positionY + vilao.height && 
             world.personage.positionY + world.personage.height > vilao.positionY
             ) {
-                super.notify(Utils.EVENTS.PERSONAGE_IMPACT)
-                super.notify(Utils.EVENTS.END_GAME)
+                let endGame = new EventGeral("END-GAME")
+                super.notify(endGame)
         } 
 
     }

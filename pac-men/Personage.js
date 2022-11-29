@@ -23,41 +23,42 @@ class Personage extends GameObject {
     }
 
     draw(){
-        // var img = new Image();
-        // var img1 = new Image();
-        // img1.src = "assets/fechado.png"
+        var img = new Image();
+        var img1 = new Image();
+        img1.src = "assets/fechado.png"
         
-        // switch(KeyBoardInput.state) {
-        //     case "UP":
-        //         img.src= 'assets/cima.png';
-        //         break;
-        //     case "DOWN":
-        //         img.src= 'assets/baixo.png';    
-        //         break;
-        //     case "LEFT":
-        //         img.src= 'assets/esqueda.png';
-        //         break;
-        //     case "RIGHT":
-        //         img.src = 'assets/personagem.png';
-        //         break;
-        // }
+        switch(KeyBoardInput.state) {
+            case "UP":
+                img.src= 'assets/cima.png';
+                break;
+            case "DOWN":
+                img.src= 'assets/baixo.png';    
+                break;
+            case "LEFT":
+                img.src= 'assets/esqueda.png';
+                break;
+            case "RIGHT":
+                img.src = 'assets/personagem.png';
+                break;
+        }
 
-        Utils.colorRect(this.positionX, this.positionY, this.width, this.height, this.color);
-
-        // if (this.closed > 10) {
-        //     World.canvasContext.colorRect(this.positionX, this.positionY, this.width, this.height, "yellow");
-        //     this.closed = 0
-        // } else {
-        //     World.canvasContext.drawImage(img, this.positionX, this.positionY, this.width, this.height);
-        //     this.closed += 1
-        // }
-
+        if (KeyBoardInput.state == "NONE") {
+            World.canvasContext.drawImage(img1, this.positionX, this.positionY, this.width, this.height);
+            this.closed = 0
+        } else {
+            if (this.closed > 10) {
+                World.canvasContext.drawImage(img1, this.positionX, this.positionY, this.width, this.height);
+                this.closed = 0
+            } else {
+                World.canvasContext.drawImage(img, this.positionX, this.positionY, this.width, this.height);
+                this.closed += 1
+            }
+        }
     }
 
     onNotify(ev) {
-		switch(ev) {
-			case Utils.EVENTS.PERSONAGE_IMPACT:
-                console.log("sfodopop")
+		switch(ev.nameEvent) {
+			case "END-GAME":
                 this.impact = true;
 				break;
 			default:

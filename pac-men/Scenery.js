@@ -15,7 +15,7 @@ class Scenery extends Observer{
         for (var i = 0; i < this.rows; i++) {
             this.grid.push([])
             for (var j = 0; j < this.columns; j++) {
-                if ((j % 2) == 0 && (i % 2) == 0) this.grid[i].push(0) //cenary
+                if ((j % 2) == 0 && (i % 2) == 0) this.grid[i].push(1) //cenary
                 else if(((j % 3 && i % 3))) this.grid[i].push(0) 
                 else this.grid[i].push(1) // black
             }
@@ -46,11 +46,18 @@ class Scenery extends Observer{
             }
     }
 
+    desactiveScenary(i,j){
+        this.grid[i][j] = 1
+    }
+
     onNotify(ev) {
-		switch(ev) {
-			case Utils.EVENTS.END_GAME:
+		switch(ev.nameEvent) {
+			case "END-GAME":
                 this.endGame = true;
 				break;
+            case "DESACTIVE-SCENENARY":
+                this.desactiveScenary(ev.objectEvent.row, ev.objectEvent.columnn)
+                break;
 			default:
 				break;
 		}

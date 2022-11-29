@@ -22,7 +22,6 @@ class KeyBoardInput {
 
 class KeyBoardInputVilao {
     static state = "RIGHT"
-     
      static updateKeyBoardPos(evt) {
          switch(evt.key) {
              case "ArrowUp":
