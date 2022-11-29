@@ -1,5 +1,5 @@
 class Personage extends GameObject {
-    constructor(physics = null, color = "yellow", positionX = 1, positionY = 180, name = "", speed = 5, closed = 0) {
+    constructor(physics = null, color = "yellow", positionX = 1, positionY = 180, vilao = false, name = "", speed = 5, closed = 0) {
         super(physics)
         this.name = name
         this.positionX = positionX
@@ -11,6 +11,7 @@ class Personage extends GameObject {
         this.height = 40
         this.color = color
         this.impact = false
+        this.vilao = vilao
 	}
 
     getPositionX(){
@@ -42,16 +43,20 @@ class Personage extends GameObject {
                 break;
         }
 
-        if (KeyBoardInput.state == "NONE") {
-            World.canvasContext.drawImage(img1, this.positionX, this.positionY, this.width, this.height);
-            this.closed = 0
+        if (this.vilao) {
+            Utils.colorRect(this.positionX, this.positionY, this.width, this.height, this.color);
         } else {
-            if (this.closed > 10) {
+            if (KeyBoardInput.state == "NONE") {
                 World.canvasContext.drawImage(img1, this.positionX, this.positionY, this.width, this.height);
                 this.closed = 0
             } else {
-                World.canvasContext.drawImage(img, this.positionX, this.positionY, this.width, this.height);
-                this.closed += 1
+                if (this.closed > 10) {
+                    World.canvasContext.drawImage(img1, this.positionX, this.positionY, this.width, this.height);
+                    this.closed = 0
+                } else {
+                    World.canvasContext.drawImage(img, this.positionX, this.positionY, this.width, this.height);
+                    this.closed += 1
+                }
             }
         }
     }

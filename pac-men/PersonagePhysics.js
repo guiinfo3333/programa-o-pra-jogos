@@ -85,7 +85,7 @@ class PersonagePhysics extends Subject {
                 }
                 break;
             case "DOWN":
-                if (choqueScenerySuperiorBaixoYFruit || choqueSceneryBaixoYDireitaXFruit) {
+                if (choqueScenerySuperiorBaixoYFruit.choque || choqueSceneryBaixoYDireitaXFruit.choque) {
                     super.notify(new EventGeral(
                         "DESACTIVE-SCENENARY", 
                         {
@@ -95,7 +95,7 @@ class PersonagePhysics extends Subject {
                     ))
                 } 
             case "LEFT":
-                if (choqueScenerySuperiorEsquerdoXFruit || choqueScenerySuperiorBaixoYFruit){                                         
+                if (choqueScenerySuperiorEsquerdoXFruit.choque || choqueScenerySuperiorBaixoYFruit.choque){ 
                     super.notify(new EventGeral(
                         "DESACTIVE-SCENENARY", 
                         {
@@ -106,7 +106,7 @@ class PersonagePhysics extends Subject {
                 } 
                 break;
             case "RIGHT":
-                if (choqueScenerySuperiorDireitoXFruit || choqueSceneryBaixoYDireitaXFruit){   
+                if (choqueScenerySuperiorDireitoXFruit.choque || choqueSceneryBaixoYDireitaXFruit.choque){   
                     super.notify(new EventGeral(
                         "DESACTIVE-SCENENARY", 
                         {
@@ -192,7 +192,7 @@ class PersonagePhysics extends Subject {
         let choqueScenerySuperiorBaixoY = world.scenery.grid[personageRowEmBaixo][personageColumn] == 2 ? true : false
         let choqueScenerySuperiorBaixoYDireitaX = world.scenery.grid[personageRowEmBaixo][personageColumnDireita] == 2 ? true : false
 
-        document.getElementById("alo").innerText = choqueScenerySuperiorCimaY + "\n "+ choqueScenerySuperiorCimaYDireita
+        document.getElementById("alo").innerText = choqueScenerySuperiorEsquerdoX
 
         return [
             new AuxChoque("superior_esquerdo_x", choqueScenerySuperiorEsquerdoX, personageRow, personageColumn),
@@ -213,5 +213,4 @@ class AuxChoque {
         this.personageRow = personageRow
         this.personageColumn = personageColumn
     }
-
 }

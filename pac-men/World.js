@@ -12,9 +12,9 @@ class World {
 		this.personagePhysics = new PersonagePhysics();
 		this.vilaoPhysics = new VilaoPhysics();
 		
-		this.personage = new Personage(this.personagePhysics, "yellow", 500);
+		this.personage = new Personage(this.personagePhysics, "yellow", 500, 120);
 		this.vilaoPhysics.addObserver(this.personage)
-		this.vilao = new Personage(this.vilaoPhysics, "red", );
+		this.vilao = new Personage(this.vilaoPhysics, "red", 0, 10, true);
 		
 		this.scenery = new Scenery();
 		this.vilaoPhysics.addObserver(this.scenery)

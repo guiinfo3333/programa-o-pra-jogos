@@ -8,7 +8,9 @@ class Scenery extends Observer{
         this.grid = []
         this.mountedScenery()
         this.mountedFruits()
-        this.endGame = false
+        this.endGame = false,
+        this.winnerGame = false,
+        this.qtdFruits = 4
     }
 
     mountedScenery(){
@@ -34,7 +36,8 @@ class Scenery extends Observer{
     }
 
     draw(){
-        if (this.endGame) Utils.drawerEndGame()
+        if (this.winnerGame) Utils.winnerGame()
+        else if (this.endGame) Utils.drawerEndGame()
         else 
             for (var i = 0; i < this.grid.length; i++) {
                 for (var j = 0; j < this.grid[i].length; j++) {
@@ -48,6 +51,14 @@ class Scenery extends Observer{
 
     desactiveScenary(i,j){
         this.grid[i][j] = 1
+        this.qtdFruits -= 1
+        this.verifyIfWinner()
+    }
+
+    verifyIfWinner(){
+        if (this.qtdFruits <= 0) {
+            this.winnerGame = true
+        }
     }
 
     onNotify(ev) {
